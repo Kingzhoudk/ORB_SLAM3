@@ -404,8 +404,14 @@ void Frame::AssignFeaturesToGrid()
 void Frame::ExtractORB(int flag, const cv::Mat &im, const int x0, const int x1)
 {
     vector<int> vLapping = {x0,x1};
-    if(flag==0)
+    if(flag==0){
+        std::chrono::steady_clock::time_point t1= std::chrono::steady_clock::now();
         monoLeft = (*mpORBextractorLeft)(im,cv::Mat(),mvKeys,mDescriptors,vLapping);
+
+        std::chrono::steady_clock::time_point t2= std::chrono::steady_clock::now();
+        double t3= std::chrono::duration_cast<std::chrono::duration<double> >(t2 - t1).count();
+        std::cout<<"t3:"<<t3<<"  , monoLeft:"<<monoLeft<<"\n";
+    }
     else
         monoRight = (*mpORBextractorRight)(im,cv::Mat(),mvKeysRight,mDescriptorsRight,vLapping);
 }
@@ -1046,7 +1052,7 @@ Frame::Frame(const cv::Mat &imLeft, const cv::Mat &imRight, const double &timeSt
     mvLevelSigma2 = mpORBextractorLeft->GetScaleSigmaSquares();
     mvInvLevelSigma2 = mpORBextractorLeft->GetInverseScaleSigmaSquares();
 
-    // ORB extraction
+    // ORB extraction 提取orb
     thread threadLeft(&Frame::ExtractORB,this,0,imLeft,0,511);
     thread threadRight(&Frame::ExtractORB,this,1,imRight,0,511);
     threadLeft.join();

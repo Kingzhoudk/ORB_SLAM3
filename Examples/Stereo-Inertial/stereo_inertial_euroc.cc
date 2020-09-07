@@ -113,8 +113,9 @@ int main(int argc, char **argv)
         first_imu[seq]--; // first imu measurement to be considered
     }
 
-    // Read rectification parameters
+    // Read rectification parameters 读取整流参数
     cv::FileStorage fsSettings(argv[2], cv::FileStorage::READ);
+    std::cout<<"argv[2]"<<argv[2]<<"\n\n\n";
     if(!fsSettings.isOpened())
     {
         cerr << "ERROR: Wrong path to settings" << endl;
@@ -191,6 +192,8 @@ int main(int argc, char **argv)
 
 
     #ifdef COMPILEDWITHC11
+            // 如果编译器可以编译c++11
+            // 获取当前时间
             std::chrono::steady_clock::time_point t_Start_Rect = std::chrono::steady_clock::now();
     #else
             std::chrono::monotonic_clock::time_point t_Start_Rect = std::chrono::monotonic_clock::now();
@@ -225,7 +228,7 @@ int main(int argc, char **argv)
             std::chrono::monotonic_clock::time_point t1 = std::chrono::monotonic_clock::now();
     #endif
 
-            // Pass the images to the SLAM system
+            // Pass the images to the SLAM system 将图像传递给SLAM系统
             SLAM.TrackStereo(imLeftRect,imRightRect,tframe,vImuMeas);
 
     #ifdef COMPILEDWITHC11
@@ -235,6 +238,8 @@ int main(int argc, char **argv)
     #endif
 
             double ttrack= std::chrono::duration_cast<std::chrono::duration<double> >(t2 - t1).count();
+            std::cout<<"track time:"<<ttrack<<"\n";
+            std::cout<<"vTimestampsImu"<<vTimestampsImu[seq][first_imu[seq]]<<"\n";
 
             vTimesTrack[ni]=ttrack;
 

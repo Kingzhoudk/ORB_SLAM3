@@ -1075,7 +1075,7 @@ namespace ORB_SLAM3
         Mat image = _image.getMat();
         assert(image.type() == CV_8UC1 );
 
-        // Pre-compute the scale pyramid
+        // Pre-compute the scale pyramid 预先计算比例金字塔
         ComputePyramid(image);
 
         vector < vector<KeyPoint> > allKeypoints;
@@ -1100,7 +1100,7 @@ namespace ORB_SLAM3
         _keypoints = vector<cv::KeyPoint>(nkeypoints);
 
         int offset = 0;
-        //Modified for speeding up stereo fisheye matching
+        //Modified for speeding up stereo fisheye matching 为加快立体鱼眼匹配速度而进行的修改
         int monoIndex = 0, stereoIndex = nkeypoints-1;
         for (int level = 0; level < nlevels; ++level)
         {
@@ -1120,7 +1120,6 @@ namespace ORB_SLAM3
             computeDescriptors(workingMat, keypoints, desc, pattern);
 
             offset += nkeypointsLevel;
-
 
             float scale = mvScaleFactor[level]; //getScale(level, firstLevel, scaleFactor);
             int i = 0;

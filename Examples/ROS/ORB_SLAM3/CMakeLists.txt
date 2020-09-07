@@ -114,3 +114,40 @@ src/ros_stereo_inertial.cc
 target_link_libraries(Stereo_Inertial
 ${LIBS}
 )
+
+# Node for mynteye stereo camera
+
+if(mynteyed_FOUND)
+   rosbuild_add_executable(mynteye_d_stereo
+           src/ros_mynteye_d_stereo.cc
+           )
+
+   target_link_libraries(mynteye_d_stereo
+           ${LIBS}
+           )
+endif()
+
+find_package(mynteye)
+find_package(mynteyed)
+
+if(mynteye_FOUND)
+   message(STATUS " mynteye MYNT-EYE-S-SDK found.")
+else()
+   message(STATUS "mynteye MYNT-EYE-S-SDK not found.")
+endif()
+
+if(mynteyed_FOUND)
+   message(STATUS "mynteyed MYNT-EYE-D-SDK found.")
+else()
+   message(STATUS "mynteyed MYNT-EYE-D-SDK not found.")
+endif()
+
+if(mynteyed_FOUND)
+   rosbuild_add_executable(mynteye_d_stereo
+           src/ros_mynteye_d_stereo.cc
+           )
+
+   target_link_libraries(mynteye_d_stereo
+           ${LIBS}
+           )
+endif()

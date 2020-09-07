@@ -112,7 +112,8 @@ include/CameraModels/KannalaBrandt8.h
 include/OptimizableTypes.h
 include/MLPnPsolver.h
 include/TwoViewReconstruction.h
-src/TwoViewReconstruction.cc)
+src/TwoViewReconstruction.cc
+        )
 
 add_subdirectory(Thirdparty/g2o)
 
@@ -191,4 +192,23 @@ add_executable(stereo_inertial_tum_vi
 Examples/Stereo-Inertial/stereo_inertial_tum_vi.cc)
 target_link_libraries(stereo_inertial_tum_vi ${PROJECT_NAME})
 
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/Examples/Mynt_d)
 
+
+find_package(mynteyed REQUIRED)
+message(STATUS "Found mynteye: ${mynteyed_VERSION}")
+
+if(mynteyed_WITH_OPENCV)
+   add_definitions(-DWITH_OPENCV)
+endif()
+
+add_executable(mynt_d_inertial
+        Examples/Mynt_d/mynt_d_stereo_inertial.cc
+        ./Examples/Mynt_d/algorithm/counter.h
+        ./Examples/Mynt_d/algorithm/cam_utils.h
+        ./Examples/Mynt_d/algorithm/cam_utils.cc
+        ./Examples/Mynt_d/algorithm/cv_painter.h
+        ./Examples/Mynt_d/algorithm/cv_painter.cc
+        )
+target_link_libraries(mynt_d_inertial
+        ${PROJECT_NAME} mynteye_depth )
